@@ -20,6 +20,9 @@ public:
 private slots:
     void newDocument();
     void open();
+    void save();
+    void saveAs();
+    void print();
 
 private:
     Ui::Notepad *ui; // указатель на класс UI

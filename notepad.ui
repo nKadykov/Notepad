@@ -49,37 +49,55 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
-   <property name="checkable">
-    <bool>true</bool>
+   <property name="icon">
+    <iconset>
+     <normaloff>images/new.png</normaloff>images/new.png</iconset>
    </property>
    <property name="text">
     <string>New</string>
    </property>
   </action>
   <action name="actionOpen">
-   <property name="checkable">
-    <bool>true</bool>
+   <property name="icon">
+    <iconset>
+     <normaloff>images/open.png</normaloff>images/open.png</iconset>
    </property>
    <property name="text">
     <string>Open</string>
    </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/save.png</normaloff>images/save.png</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
    </property>
   </action>
   <action name="actionSave_as">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/save_as.png</normaloff>images/save_as.png</iconset>
+   </property>
    <property name="text">
     <string>Save as</string>
    </property>
   </action>
   <action name="actionPrint">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/print.png</normaloff>images/print.png</iconset>
+   </property>
    <property name="text">
     <string>Print</string>
    </property>
   </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/exit.png</normaloff>images/exit.png</iconset>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
