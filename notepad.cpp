@@ -2,6 +2,17 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QMessageBox>
+#if defined(QT_PRINTSUPPORT_LIB)
+#include <QtPrintSupport/qtprintsupportglobal.h>
+#if QT_CONFIG(printer)
+#if QT_CONFIG(printdialog)
+#include <QPrintDialog>
+#endif
+#include <QPrinter>
+#endif
+#endif
+#include <QFont>
+#include <QFontDialog>
 
 #include "notepad.h"
 #include "./ui_notepad.h" // заголовочный файл UI
@@ -18,6 +29,33 @@ Notepad::Notepad(QWidget *parent) // определение конструкто
     connect(ui->actionSave_as, &QAction::triggered, this, &Notepad::saveAs);
     connect(ui->actionPrint, &QAction::triggered, this, &Notepad::print);
     connect(ui->actionExit, &QAction::triggered, this, &Notepad::close);
+
+#if QT_CONFIG(clipboard)
+    connect(ui->textEdit, &QTextEdit::copyAvailable, ui->actionCopy, &QAction::setEnabled);
+    connect(ui->actionCopy, &QAction::triggered, ui->textEdit, &QTextEdit::copy);
+    connect(ui->actionCut, &QAction::triggered, ui->textEdit, &QTextEdit::cut);
+    connect(ui->actionPaste, &QAction::triggered, ui->textEdit, &QTextEdit::paste);
+#endif
+    connect(ui->textEdit, &QTextEdit::undoAvailable, ui->actionUndo, &QAction::setEnabled);
+    connect(ui->actionUndo, &QAction::triggered, ui->textEdit, &QTextEdit::undo);
+    connect(ui->textEdit, &QTextEdit::redoAvailable, ui->actionRedo, &QAction::setEnabled);
+    connect(ui->actionRedo, &QAction::triggered, ui->textEdit, &QTextEdit::redo);
+
+    connect(ui->actionFont, &QAction::triggered, this, &Notepad::selectFont);
+    connect(ui->actionBold, &QAction::triggered, this, &Notepad::setFontBold);
+    connect(ui->actionUnderline, &QAction::triggered, this, &Notepad::setFontUnderline);
+    connect(ui->actionItalic, &QAction::triggered, this, &Notepad::setFontItalic);
+    connect(ui->actionAbout, &QAction::triggered, this, &Notepad::about);
+
+#if !defined(QT_PRINTSUPPORT_LIB) || QT_CONFIG(printer)
+    ui->actionPrint->setEnabled(false);
+#endif
+
+#if !QT_CONFIG(clipboard)
+    ui->actionCut->setEnabled(false);
+    ui->actionCopy->setEnabled(false);
+    ui->actionPaste->setEnabled(false);
+#endif
 }
 
 Notepad::~Notepad() // определение деструктора
@@ -104,4 +142,29 @@ void Notepad::print() {
 #endif // QT_CONFIG(printdialog)
     ui->textEdit->print(&printDev);
 #endif // QT_CONFIG(printer)
+}
+
+void Notepad::selectFont() {
+    bool fontSelected;
+    QFont font = QFontDialog::getFont(&fontSelected, this);
+    if(fontSelected) {
+        ui->textEdit->setFont(font);
+    }
+}
+
+
+void Notepad::setFontUnderline(bool underline) {
+    ui->textEdit->setFontUnderline(underline);
+}
+
+void Notepad::setFontItalic(bool italic) {
+    ui->textEdit->setFontItalic(italic);
+}
+
+void Notepad::setFontBold(bool bold) {
+    bold ? ui->textEdit->setFontWeight(QFont::Bold) : ui->textEdit->setFontWeight(QFont::Normal);
+}
+
+void Notepad::about() {
+    QMessageBox::about(this, tr("About Notepad"), tr("The <b>Notepad</b> application"));
 }

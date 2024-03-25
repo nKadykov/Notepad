@@ -24,6 +24,12 @@ private slots:
     void saveAs();
     void print();
 
+    void selectFont();
+    void setFontBold(bool bold);
+    void setFontUnderline(bool underline);
+    void setFontItalic(bool italic);
+    void about();
+
 private:
     Ui::Notepad *ui; // указатель на класс UI
     QString currentFile;
